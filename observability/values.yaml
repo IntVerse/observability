@@ -1,0 +1,44 @@
+# Default values for observability.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: monitor-ns
+
+#Redpanda host that exposes metrics "https://docs.redpanda.com/docs/manage/monitoring/" 
+redpanda_metrics_host: intverse-rp.intverse-rp-ns.svc.cluster.local
+
+prometheus:
+  name: prometheus
+  port: 9090
+  image: prom/prometheus
+  resources:
+    enabled: true
+    limits:
+      memory: "2Gi"
+      cpu: "2000m"
+    requests:
+      memory: 500M
+      cpu: "500m"
+  service:
+    enabled: false
+    type: NodePort
+  storage:
+    enabled: true
+    storageslass:
+    size: 30Gi
+
+grafana:
+  name: grafana
+  port: 3000
+  image: grafana/grafana:latest
+  resources:
+    enabled: true
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+    requests:
+      memory: 256M
+      cpu: "200m"
+  service:
+    enabled: true
+    type: NodePort

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.grafana.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "observability.label" . }}-{{ template "grafana.label" . }}
+  template:
+    metadata:
+      name: {{ .Values.grafana.name }}
+      labels:
+        app: {{ template "observability.label" . }}-{{ template "grafana.label" . }}
+    spec:
+      containers:
+      - name: {{ .Values.grafana.name }}
+        image: {{ .Values.grafana.image }}
+        ports:
+        - name: {{ .Values.grafana.name }}
+          containerPort: {{ .Values.grafana.port }}
+{{- if .Values.grafana.resources.enabled }}
+        resources:
+          limits:
+            memory: {{ .Values.grafana.resources.limits.memory }}
+            cpu: {{ .Values.grafana.resources.limits.cpu }}
+          requests: 
+            memory: {{ .Values.grafana.resources.requests.memory }}
+            cpu: {{ .Values.grafana.resources.requests.cpu }}
+{{- end }}
+        volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: {{ .Values.grafana.name }}-storage
+          - mountPath: /etc/grafana/provisioning/datasources
+            name: {{ .Values.grafana.name }}-datasources
+            readOnly: false
+          - mountPath: /etc/grafana/provisioning/dashboards
+            name: {{ .Values.grafana.name }}-provider
+            readOnly: false
+      volumes:
+        - name: {{ .Values.grafana.name }}-storage
+          emptyDir: {}
+        - name: {{ .Values.grafana.name }}-datasources
+          configMap:
+              defaultMode: 420
+              name: {{ .Values.grafana.name }}-datasources
+        - name: {{ .Values.grafana.name }}-provider
+          configMap:
+              defaultMode: 420
+              name: {{ .Values.grafana.name }}-provider

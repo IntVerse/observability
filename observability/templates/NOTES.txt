@@ -1,0 +1,8 @@
+
+Helm chart "{{ .Chart.Name }}" has been Deployed, Please validate if Prometheus and Grafana POD's are Running.
+
+Commands to get Grafama URL:
+
+export NODE_PORT=$(kubectl get services {{ .Values.grafana.name }}-svc -n {{ .Values.namespace }} -o jsonpath="{.spec.ports[0].nodePort}")
+export NODE_IP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+echo "http://$NODE_IP:$NODE_PORT"

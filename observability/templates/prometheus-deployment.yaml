@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.prometheus.name }}-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ template "observability.label" . }}-{{ template "prometheus.label" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "observability.label" . }}-{{ template "prometheus.label" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "observability.label" . }}-{{ template "prometheus.label" . }}
+    spec:
+      containers:
+        - name: {{ .Values.prometheus.name }}
+          image: {{ .Values.prometheus.image }}
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus/"
+          ports:
+            - containerPort: {{ .Values.prometheus.port }}
+{{- if .Values.prometheus.resources.enabled }}
+          resources:
+            limits:
+              memory: {{ .Values.prometheus.resources.limits.memory }}
+              cpu: {{ .Values.prometheus.resources.limits.cpu }}
+            requests:
+              memory: {{ .Values.prometheus.resources.requests.memory }}
+              cpu: {{ .Values.prometheus.resources.requests.cpu }}
+{{- end }}
+          volumeMounts:
+            - name: {{ .Values.prometheus.name }}-config-volume
+              mountPath: /etc/prometheus/
+            - name: {{ .Values.prometheus.name }}-storage-volume
+              mountPath: /prometheus/
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      volumes:
+        - name: {{ .Values.prometheus.name }}-config-volume
+          configMap:
+            defaultMode: 420
+            name: {{ .Values.prometheus.name }}-cm
+        - name: {{ .Values.prometheus.name }}-storage-volume
+{{- if .Values.prometheus.storage.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.prometheus.name }}-pvc
+{{- else }}
+          emptyDir: {}
+{{- end }}
