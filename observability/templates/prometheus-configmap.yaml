@@ -16,8 +16,12 @@ data:
       - targets:
         - {{ .Values.redpanda_metrics_host }}:9644
       metrics_path: /public_metrics
+      tls_config:
+        insecure_skip_verify: true
     - job_name: connect
       static_configs:
       - targets:
         - connect:9010
       metrics_path: /
+      tls_config:
+        insecure_skip_verify: true
