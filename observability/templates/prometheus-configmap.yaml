@@ -16,12 +16,18 @@ data:
       - targets:
         - {{ .Values.redpanda_metrics_host }}:9644
       metrics_path: /public_metrics
+{{- if .Values.redpanda_metrics_ssl.enabled }}
+      scheme: https
       tls_config:
         insecure_skip_verify: true
+{{- end }}
     - job_name: connect
       static_configs:
       - targets:
         - connect:9010
       metrics_path: /
+{{- if .Values.connect_metrics_ssl.enabled }}
+      scheme: https
       tls_config:
         insecure_skip_verify: true
+{{- end }}

@@ -3,13 +3,13 @@ entries:
   observability:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-03-28T23:26:06.76214-04:00"
+    created: "2023-03-28T23:48:03.323565-04:00"
     description: A Helm chart to deploy monitoring (Prometheus and Grafana)
-    digest: 7e1308e0e0a4a0e324c34289cd4e4e919cd9c354e76081568d62174b1ec49e4b
+    digest: 5afed1da1ec7888b362e2d04c1e30cf6aec126bfcaeac4c9ae25ac34f216fffb
     icon: https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png
     name: observability
     type: application
     urls:
     - https://intverse.github.io/observability/observability-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-28T23:26:06.761065-04:00"
+generated: "2023-03-28T23:48:03.321967-04:00"
