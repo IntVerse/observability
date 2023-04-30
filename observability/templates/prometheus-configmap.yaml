@@ -14,7 +14,9 @@ data:
     - job_name: redpanda
       static_configs:
       - targets:
-        - {{ .Values.redpanda_metrics_host }}:9644
+        {{- range $h := .Values.redpanda_metrics_host }}
+        - {{ $h.name }}:9644
+        {{- end }}
       metrics_path: /public_metrics
 {{- if .Values.redpanda_metrics_ssl.enabled }}
       scheme: https

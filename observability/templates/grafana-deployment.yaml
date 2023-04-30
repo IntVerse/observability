@@ -17,6 +17,7 @@ spec:
       containers:
       - name: {{ .Values.grafana.name }}
         image: {{ .Values.grafana.image }}
+        imagePullPolicy: IfNotPresent
         ports:
         - name: {{ .Values.grafana.name }}
           containerPort: {{ .Values.grafana.port }}

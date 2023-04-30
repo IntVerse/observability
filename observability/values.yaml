@@ -5,7 +5,7 @@
 namespace: monitor-ns
 
 #Redpanda host that exposes metrics "https://docs.redpanda.com/docs/manage/monitoring/" 
-redpanda_metrics_host: intverse-rp.intverse-rp-ns.svc.cluster.local
+redpanda_metrics_host.0.name: redpanda-0.redpanda.intverse-rp.svc.cluster.local
 redpanda_metrics_ssl:
   enabled: true
 

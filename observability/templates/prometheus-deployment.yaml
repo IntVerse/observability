@@ -18,6 +18,7 @@ spec:
       containers:
         - name: {{ .Values.prometheus.name }}
           image: {{ .Values.prometheus.image }}
+          imagePullPolicy: IfNotPresent
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.path=/prometheus/"
