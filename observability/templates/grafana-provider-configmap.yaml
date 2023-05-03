@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.grafana.name }}-provider
   namespace: {{ .Values.namespace }}
 data:
-  redpandadefault.json: {{ .Files.Get "redpanda-dashboard/redpandadefault.json" | toJson }}
+  #redpandadefault.json: {{ .Files.Get "redpanda-dashboard/redpandadefault.json" | toJson }}
   redpandaops.json: {{ .Files.Get "redpanda-dashboard/redpandaops.json" | toJson }}
   provider.yaml: |-
     apiVersion: 1
